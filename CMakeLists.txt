@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.1)
 set(CXX_DISABLE_WERROR 1)
 set(CMAKE_CXX_STANDARD 11)
 
-set(PROJECT_NAME NewFSMController)
-set(PROJECT_DESCRIPTION "NewFSMController")
+set(PROJECT_NAME MinimumJerkController)
+set(PROJECT_DESCRIPTION "MinimumJerkController")
 set(PROJECT_URL "")
 
 project(
@@ -24,7 +24,7 @@ if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
 
-configure_file(etc/NewFSMController.in.yaml
-               "${CMAKE_CURRENT_BINARY_DIR}/etc/NewFSMController.yaml")
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/etc/NewFSMController.yaml"
+configure_file(etc/MinimumJerkController.in.yaml
+               "${CMAKE_CURRENT_BINARY_DIR}/etc/MinimumJerkController.yaml")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/etc/MinimumJerkController.yaml"
         DESTINATION "${MC_CONTROLLER_RUNTIME_INSTALL_PREFIX}/etc")

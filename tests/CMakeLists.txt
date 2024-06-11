@@ -4,13 +4,13 @@ file(
   INPUT "${CMAKE_CURRENT_SOURCE_DIR}/etc/mc_rtc.yaml")
 
 set(MC_STATES_RUNTIME_INSTALL_PREFIX
-    "$<TARGET_FILE_DIR:NewFSMController_Initial>")
-configure_file("${PROJECT_SOURCE_DIR}/etc/NewFSMController.in.yaml"
-               "${CMAKE_CURRENT_BINARY_DIR}/etc/NewFSMController.cmake.yaml")
+    "$<TARGET_FILE_DIR:MinimumJerkController_Initial>")
+configure_file("${PROJECT_SOURCE_DIR}/etc/MinimumJerkController.in.yaml"
+               "${CMAKE_CURRENT_BINARY_DIR}/etc/MinimumJerkController.cmake.yaml")
 file(
   GENERATE
-  OUTPUT "$<TARGET_FILE_DIR:NewFSMController>/etc/NewFSMController.yaml"
-  INPUT "${CMAKE_CURRENT_BINARY_DIR}/etc/NewFSMController.cmake.yaml")
+  OUTPUT "$<TARGET_FILE_DIR:MinimumJerkController>/etc/MinimumJerkController.yaml"
+  INPUT "${CMAKE_CURRENT_BINARY_DIR}/etc/MinimumJerkController.cmake.yaml")
 
 if(MSVC AND _VCPKG_INSTALLED_DIR)
   set(VCPKG_INSTALL_PREFIX "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_PREFIX}")
