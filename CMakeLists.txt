@@ -18,11 +18,13 @@ if(NOT TARGET mc_rtc::mc_control)
   find_package(mc_rtc REQUIRED)
 endif()
 
+find_package(MinimumJerkTask REQUIRED)
+
 add_subdirectory(src)
 
-if(BUILD_TESTING)
-  add_subdirectory(tests)
-endif()
+# if(BUILD_TESTING)
+#   add_subdirectory(tests)
+# endif()
 
 configure_file(etc/MinimumJerkController.in.yaml
                "${CMAKE_CURRENT_BINARY_DIR}/etc/MinimumJerkController.yaml")

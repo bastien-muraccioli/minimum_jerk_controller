@@ -1,3 +1,6 @@
 add_fsm_state_simple(MinimumJerkController_Initial)
+add_fsm_state_simple(MinimumJerkController_Switch)
+add_fsm_state_simple(MinimumJerkController_Torque)
+add_fsm_state_simple(MinimumJerkController_TestJacDot)
 
 add_fsm_data_directory(data)
