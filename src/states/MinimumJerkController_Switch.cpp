@@ -1,6 +1,7 @@
 #include "MinimumJerkController_Switch.h"
 
 #include "../MinimumJerkController.h"
+#include <Eigen/src/Geometry/Quaternion.h>
 
 void MinimumJerkController_Switch::configure(const mc_rtc::Configuration & config) {}
 
@@ -9,28 +10,31 @@ void MinimumJerkController_Switch::start(mc_control::fsm::Controller & ctl_)
   auto & ctl = static_cast<MinimumJerkController &>(ctl_);
   auto & robot = ctl.robot();
 
-  initPos_ = robot.bodyPosW("FT_sensor_mounting").translation();
+  initPos_ = robot.bodyPosW("FT_sensor_wrench").translation();
 
   Eigen::VectorXd W_1(9);
   W_1 << 1e7, 1e7, 1e7, 1e5, 1e5, 1e5, 1e2, 1e2, 1e2;
+  // W_1 << 1e2, 1e2, 1e2, 1e3, 1e3, 1e3, 1e1, 1e1, 1e1;
   Eigen::VectorXd W_2(8);
   W_2 << 1e0, 1e0, 1e0, 5 * 1e3, 2 * 1e3, 6 * 1e2, 6 * 1e2, 6 * 1e2;
+  // W_2 << 1e0, 1e0, 1e0, 1e2, 1e1, 1e1, 1e1, 1e1;
   ctl.minJerkTask->W_1(W_1);
   ctl.minJerkTask->W_2(W_2);
 
-  ctl.minJerkTask->setTarget(initPos_ + Eigen::Vector3d(0.1, 0.3, 0.0));
+  ctl.minJerkTask->setTarget(initPos_ + Eigen::Vector3d(0.1, 0.15, 0.0));
   ctl.compPostureTask->stiffness(0.0);
   ctl.compPostureTask->damping(1.0);
   ctl.compPostureTask->makeCompliant(true);
 
   ctl.solver().addTask(ctl.minJerkTask);
 
-  oriTask_ = std::make_shared<mc_tasks::OrientationTask>("FT_sensor_mounting", ctl.robots(), ctl.robot().robotIndex(),
+  oriTask_ = std::make_shared<mc_tasks::OrientationTask>("FT_sensor_wrench", ctl.robots(), ctl.robot().robotIndex(),
                                                          20.0, 10000.0);
-  // ctl.solver().addTask(oriTask_);
+  oriTask_->orientation(Eigen::Quaterniond(-0.5, 0.5, 0.5, 0.5).toRotationMatrix());
+  ctl.solver().addTask(oriTask_);
 
   init_ = true;
-  if(ctl.datastore().call<bool>("EF_Estimator::isActive"))
+  if(not ctl.datastore().call<bool>("EF_Estimator::isActive"))
   {
     ctl.datastore().call("EF_Estimator::toggleActive");
   }
@@ -50,12 +54,12 @@ bool MinimumJerkController_Switch::run(mc_control::fsm::Controller & ctl_)
     mc_rtc::log::info("Target reached switching target");
     if(init_)
     {
-      ctl.minJerkTask->setTarget(initPos_ + Eigen::Vector3d(0.1, -0.3, 0.0));
+      ctl.minJerkTask->setTarget(initPos_ + Eigen::Vector3d(0.1, -0.15, 0.0));
       init_ = false;
     }
     else
     {
-      ctl.minJerkTask->setTarget(initPos_ + Eigen::Vector3d(0.1, 0.3, 0.0));
+      ctl.minJerkTask->setTarget(initPos_ + Eigen::Vector3d(0.1, 0.15, 0.0));
       init_ = true;
     }
   }

@@ -1,10 +1,9 @@
 #pragma once
 
 #include <mc_control/fsm/State.h>
-#include <mc_tasks/PositionTask.h>
-#include <RBDyn/Coriolis.h>
+#include <mc_tasks/CompliantEndEffectorTask.h>
 
-struct MinimumJerkController_TestJacDot : mc_control::fsm::State
+struct MinimumJerkController_EETask : mc_control::fsm::State
 {
 
   void configure(const mc_rtc::Configuration & config) override;
@@ -16,10 +15,6 @@ struct MinimumJerkController_TestJacDot : mc_control::fsm::State
   void teardown(mc_control::fsm::Controller & ctl) override;
 
 private:
-  std::shared_ptr<mc_tasks::PositionTask> posTask;
   Eigen::Vector3d initPos_;
   bool init_;
-  Eigen::IOFormat format;
-  rbd::Jacobian jac;
-  rbd::Coriolis * cor;
 };

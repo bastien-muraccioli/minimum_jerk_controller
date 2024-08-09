@@ -18,13 +18,18 @@ if(NOT TARGET mc_rtc::mc_control)
   find_package(mc_rtc REQUIRED)
 endif()
 
+# To use ros
+find_package(catkin REQUIRED COMPONENTS roscpp)
+catkin_package(CATKIN_DEPENDS geometry_msgs roscpp roslib std_msgs)
+message("=========== Catkin include directories : ${catkin_INCLUDE_DIRS}")
+include_directories(include ${catkin_INCLUDE_DIRS} $ENV{HOME}/.local/include)
+link_directories(${catkin_LIBRARY_DIRS} $ENV{HOME}/.local/lib)
+
 find_package(MinimumJerkTask REQUIRED)
 
 add_subdirectory(src)
 
-# if(BUILD_TESTING)
-#   add_subdirectory(tests)
-# endif()
+# if(BUILD_TESTING) add_subdirectory(tests) endif()
 
 configure_file(etc/MinimumJerkController.in.yaml
                "${CMAKE_CURRENT_BINARY_DIR}/etc/MinimumJerkController.yaml")

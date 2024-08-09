@@ -5,11 +5,13 @@ file(
 
 set(MC_STATES_RUNTIME_INSTALL_PREFIX
     "$<TARGET_FILE_DIR:MinimumJerkController_Initial>")
-configure_file("${PROJECT_SOURCE_DIR}/etc/MinimumJerkController.in.yaml"
-               "${CMAKE_CURRENT_BINARY_DIR}/etc/MinimumJerkController.cmake.yaml")
+configure_file(
+  "${PROJECT_SOURCE_DIR}/etc/MinimumJerkController.in.yaml"
+  "${CMAKE_CURRENT_BINARY_DIR}/etc/MinimumJerkController.cmake.yaml")
 file(
   GENERATE
-  OUTPUT "$<TARGET_FILE_DIR:MinimumJerkController>/etc/MinimumJerkController.yaml"
+  OUTPUT
+    "$<TARGET_FILE_DIR:MinimumJerkController>/etc/MinimumJerkController.yaml"
   INPUT "${CMAKE_CURRENT_BINARY_DIR}/etc/MinimumJerkController.cmake.yaml")
 
 if(MSVC AND _VCPKG_INSTALLED_DIR)

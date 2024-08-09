@@ -3,9 +3,11 @@ set(controller_SRC MinimumJerkController.cpp)
 set(controller_HDR MinimumJerkController.h)
 
 add_library(${PROJECT_NAME} SHARED ${controller_SRC} ${controller_HDR})
-set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS
-                                                 "-DMinimumJerkController_EXPORTS")
-target_link_libraries(${PROJECT_NAME} PUBLIC mc_rtc::mc_control_fsm MinimumJerkTask::mc_tasks_MinimumJerkTask)
+set_target_properties(
+  ${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-DMinimumJerkController_EXPORTS")
+target_link_libraries(
+  ${PROJECT_NAME} PUBLIC mc_rtc::mc_control_fsm mc_rtc::mc_rtc_ros
+                         MinimumJerkTask::mc_tasks_MinimumJerkTask)
 install(
   TARGETS ${PROJECT_NAME}
   ARCHIVE DESTINATION "${MC_RTC_LIBDIR}"

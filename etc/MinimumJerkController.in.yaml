@@ -8,12 +8,12 @@ StepByStep: true
 IdleKeepState: false
 # Where to look for state libraries
 StatesLibraries:
-- "@MC_STATES_DEFAULT_RUNTIME_INSTALL_PREFIX@"
-- "@MC_STATES_RUNTIME_INSTALL_PREFIX@"
+  - "@MC_STATES_DEFAULT_RUNTIME_INSTALL_PREFIX@"
+  - "@MC_STATES_RUNTIME_INSTALL_PREFIX@"
 # Where to look for state files
 StatesFiles:
-- "@MC_STATES_DEFAULT_RUNTIME_INSTALL_PREFIX@/data"
-- "@MC_STATES_RUNTIME_INSTALL_PREFIX@/data"
+  - "@MC_STATES_DEFAULT_RUNTIME_INSTALL_PREFIX@/data"
+  - "@MC_STATES_RUNTIME_INSTALL_PREFIX@/data"
 # If true, state factory will be more verbose
 VerboseStateFactory: false
 # Additional robots to load
@@ -29,25 +29,25 @@ robots:
 
 # Collision constraint
 collisions:
-- type: collision
-  useMinimal: true
+  - type: collision
+    useMinimal: true
 
 # Implement some additional text states
 states: {}
 # Transitions map
 transitions:
-- [MinimumJerkController_Initial, OK, MinimumJerkController_Torque, Strict]
-- [MinimumJerkController_Initial, OK, MinimumJerkController_Switch, Strict]
-- [MinimumJerkController_Initial, OK, MinimumJerkController_TestJacDot, Strict]
-- [MinimumJerkController_Torque, OK, MinimumJerkController_Torque, Strict]
-- [MinimumJerkController_Switch, OK, MinimumJerkController_Switch, Strict]
-- [MinimumJerkController_TestJacDot, OK, MinimumJerkController_TestJacDot, Strict]
+  - [MinimumJerkController_Initial, OK, MinimumJerkController_Torque, Strict]
+  - [MinimumJerkController_Initial, OK, MinimumJerkController_Switch, Strict]
+  - [MinimumJerkController_Initial, OK, MinimumJerkController_Fitts, Strict]
+  - [MinimumJerkController_Torque, OK, MinimumJerkController_Torque, Strict]
+  - [MinimumJerkController_Switch, OK, MinimumJerkController_Switch, Strict]
+  - [MinimumJerkController_Fitts, OK, MinimumJerkController_Fitts, Strict]
 # Initial state
 init: MinimumJerkController_Initial
 
 ObserverPipelines:
-- name: Pipeline
-  observers:
-    - type: Encoder
-      config:
-        velocity: encoderVelocities
+  - name: Pipeline
+    observers:
+      - type: Encoder
+        config:
+          velocity: encoderVelocities

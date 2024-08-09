@@ -33,7 +33,7 @@ MinimumJerkController::MinimumJerkController(mc_rbdyn::RobotModulePtr rm,
   // // End
 
   minJerkTask =
-      std::make_shared<mc_tasks::MinimumJerkTask>("FT_sensor_mounting", robots(), robot().robotIndex(), 10000.0);
+      std::make_shared<mc_tasks::MinimumJerkTask>("FT_sensor_wrench", robots(), robot().robotIndex(), 10000.0);
   // ctl.solver().addTask(ctl.minJerkTask);
 
   datastore().make<std::string>("ControlMode", "Position");
