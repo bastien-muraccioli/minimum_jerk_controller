@@ -2,7 +2,8 @@
 
 #include <mc_control/fsm/State.h>
 #include <mc_tasks/CompliantEndEffectorTask.h>
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/subscription.hpp>
 #include <mc_rtc_ros/ros.h>
 #include <thread>
 
@@ -24,7 +25,7 @@ private:
   Eigen::Vector3d initPos_;
   bool init_;
 
-  std::shared_ptr<ros::NodeHandle> nh_;
+  std::shared_ptr<rclcpp::Node> nh_;
   std::thread spinThread_;
-  ros::Publisher pose_pub_;
+  typename rclcpp::Publisher<std_msgs::msg::Float32MultiArray>::SharedPtr pose_pub_;
 };

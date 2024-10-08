@@ -1,5 +1,5 @@
 #include "MinimumJerkController_Fitts.h"
-#include <std_msgs/Float32MultiArray.h>
+#include <std_msgs/msg/float32_multi_array.hpp>
 #include "../MinimumJerkController.h"
 
 void MinimumJerkController_Fitts::configure(const mc_rtc::Configuration & config) {}
@@ -12,7 +12,7 @@ void MinimumJerkController_Fitts::start(mc_control::fsm::Controller & ctl_)
   nh_ = mc_rtc::ROSBridge::get_node_handle();
   spinThread_ = std::thread(std::bind(&MinimumJerkController_Fitts::rosSpinner, this));
 
-  pose_pub_ = nh_->advertise<std_msgs::Float32MultiArray>("EE_position", 1);
+  pose_pub_ = nh_->create_publisher<std_msgs::msg::Float32MultiArray>("EE_position", 1);
 
   ctl.datastore().assign<std::string>("ControlMode", "Torque");
   mc_rtc::log::success("[MinJerkCtrl] Switched to Switch state - {} controlled",
@@ -44,10 +44,10 @@ bool MinimumJerkController_Fitts::run(mc_control::fsm::Controller & ctl_)
   auto & ctl = static_cast<MinimumJerkController &>(ctl_);
   Eigen::Vector3d pose = ctl.robot().frame("FT_sensor_mounting").position().translation();
 
-  std_msgs::Float32MultiArray msg;
+  std_msgs::msg::Float32MultiArray msg;
   msg.data.emplace_back(pose.y());
   msg.data.emplace_back(pose.z());
-  pose_pub_.publish(msg);
+  pose_pub_->publish(msg);
 
   return false;
 }
@@ -60,10 +60,10 @@ void MinimumJerkController_Fitts::teardown(mc_control::fsm::Controller & ctl_)
 void MinimumJerkController_Fitts::rosSpinner()
 {
   mc_rtc::log::info("ROS spinner thread created");
-  ros::Rate r(0.001);
-  while(ros::ok())
+  rclcpp::Rate r(0.001);
+  while(rclcpp::ok())
   {
-    ros::spinOnce();
+    rclcpp::spin_some(nh_);
     r.sleep();
   }
   mc_rtc::log::info("ROS spinner destroyed");
